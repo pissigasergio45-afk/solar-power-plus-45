@@ -12,11 +12,11 @@ const Header = () => {
           {/* Logo */}
           <div className="flex items-center space-x-2">
             <div className="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-xl">E</span>
+              <span className="text-primary-foreground font-bold text-xl">Z</span>
             </div>
             <div>
               <h1 className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-                EcoEnergy
+                ZPEnergy
               </h1>
               <p className="text-xs text-muted-foreground">Solutions Solaires</p>
             </div>

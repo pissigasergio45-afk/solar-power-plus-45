@@ -12,14 +12,14 @@ const Footer = () => {
               <div className="w-10 h-10 bg-gradient-solar rounded-lg flex items-center justify-center">
                 <span className="text-accent-foreground font-bold text-xl">E</span>
               </div>
-              <div>
-                <h3 className="text-2xl font-bold">EcoEnergy</h3>
-                <p className="text-sm opacity-80">Solutions Solaires</p>
-              </div>
+            <div>
+              <h3 className="text-2xl font-bold">ZPEnergy</h3>
+              <p className="text-sm opacity-80">Solutions Solaires</p>
+            </div>
             </div>
             <p className="text-sm opacity-80 leading-relaxed">
-              Spécialiste en solutions d'énergie solaire depuis 15 ans. 
-              Nous vous accompagnons vers l'autonomie énergétique avec des produits de qualité et un service premium.
+              Spécialiste en solutions d'énergie solaire au Burkina Faso. 
+              Partenaire SOBELEC pour vous accompagner vers l'autonomie énergétique avec des produits de qualité et un service premium.
             </p>
             <div className="flex space-x-4">
               <Button variant="ghost" size="icon" className="text-primary-foreground hover:bg-primary-foreground/10">
@@ -67,17 +67,21 @@ const Footer = () => {
             <div className="space-y-4">
               <div className="flex items-center space-x-3">
                 <Phone className="h-5 w-5 opacity-80" />
-                <span className="text-sm">+33 1 23 45 67 89</span>
+                <span className="text-sm">+226 07391659 (Conseils)</span>
+              </div>
+              <div className="flex items-center space-x-3">
+                <Phone className="h-5 w-5 opacity-80" />
+                <span className="text-sm">+226 74842709 (WhatsApp)</span>
               </div>
               <div className="flex items-center space-x-3">
                 <Mail className="h-5 w-5 opacity-80" />
-                <span className="text-sm">contact@ecoenergy.fr</span>
+                <span className="text-sm">pissigasergio45@gmail.com</span>
               </div>
               <div className="flex items-start space-x-3">
                 <MapPin className="h-5 w-5 opacity-80 mt-0.5" />
                 <span className="text-sm">
-                  123 Avenue de l'Énergie<br />
-                  75000 Paris, France
+                  Partenaire SOBELEC<br />
+                  Burkina Faso
                 </span>
               </div>
             </div>
@@ -91,7 +95,7 @@ const Footer = () => {
         <div className="border-t border-primary-foreground/20 mt-12 pt-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-sm opacity-80">
-              © 2024 EcoEnergy. Tous droits réservés.
+              © 2024 ZPEnergy. Tous droits réservés.
             </p>
             <div className="flex items-center space-x-6">
               <a href="#" className="text-sm opacity-80 hover:opacity-100 transition-smooth">
