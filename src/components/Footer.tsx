@@ -71,7 +71,11 @@ const Footer = () => {
               </div>
               <div className="flex items-center space-x-3">
                 <Phone className="h-5 w-5 opacity-80" />
-                <span className="text-sm">+226 74842709 (WhatsApp)</span>
+                <span className="text-sm">+226 74842709 (Devis)</span>
+              </div>
+              <div className="flex items-center space-x-3">
+                <Phone className="h-5 w-5 opacity-80" />
+                <span className="text-sm">+226 07391659 (Livraison)</span>
               </div>
               <div className="flex items-center space-x-3">
                 <Mail className="h-5 w-5 opacity-80" />
@@ -80,9 +84,16 @@ const Footer = () => {
               <div className="flex items-start space-x-3">
                 <MapPin className="h-5 w-5 opacity-80 mt-0.5" />
                 <span className="text-sm">
-                  Partenaire SOBELEC<br />
+                  NAGRIN, OUAGADOUGOU<br />
                   Burkina Faso
                 </span>
+              </div>
+              <div className="flex items-start space-x-3">
+                <span className="text-sm font-medium">Partenaires:</span>
+              </div>
+              <div className="text-sm opacity-80 ml-3">
+                • SOBELEC<br />
+                • EZO-energy
               </div>
             </div>
             <Button variant="solar" size="sm" className="w-full">
