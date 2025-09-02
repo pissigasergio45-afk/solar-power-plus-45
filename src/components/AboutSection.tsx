@@ -5,26 +5,26 @@ const AboutSection = () => {
   const stats = [
     {
       icon: <Users className="h-6 w-6" />,
-      number: "2000+",
+      number: "20",
       label: "Clients satisfaits",
       gradient: "bg-gradient-primary"
     },
     {
       icon: <Zap className="h-6 w-6" />,
-      number: "5MW+",
-      label: "Capacité installée",
+      number: "1MW",
+      label: "Plus grande installation",
       gradient: "bg-gradient-tech"
     },
     {
       icon: <Shield className="h-6 w-6" />,
-      number: "15+",
-      label: "Années d'expérience",
+      number: "Ghana",
+      label: "Expérience internationale",
       gradient: "bg-gradient-solar"
     },
     {
       icon: <Award className="h-6 w-6" />,
-      number: "99%",
-      label: "Satisfaction client",
+      number: "Togo",
+      label: "Techniciens licenciés",
       gradient: "bg-gradient-hero"
     }
   ];
@@ -66,26 +66,22 @@ const AboutSection = () => {
             </div>
 
             <div className="space-y-4">
-              <h4 className="text-lg font-semibold">Pourquoi Nous Choisir ?</h4>
+              <h4 className="text-lg font-semibold">Notre Expertise Internationale</h4>
               <ul className="space-y-2">
                 <li className="flex items-center space-x-3">
                   <Shield className="h-5 w-5 text-primary" />
-                  <span className="text-muted-foreground">Garantie jusqu'à 25 ans sur nos produits</span>
+                  <span className="text-muted-foreground">Techniciens licenciés ayant travaillé au Ghana (Accra)</span>
                 </li>
                 <li className="flex items-center space-x-3">
                   <Zap className="h-5 w-5 text-primary" />
-                  <span className="text-muted-foreground">Installation professionnelle certifiée</span>
+                  <span className="text-muted-foreground">Expérience au Togo avec EZO-energy</span>
                 </li>
                 <li className="flex items-center space-x-3">
                   <Users className="h-5 w-5 text-primary" />
-                  <span className="text-muted-foreground">Support client dédié et réactif</span>
+                  <span className="text-muted-foreground">20 clients satisfaits avec notre plus grande installation de 1MW</span>
                 </li>
               </ul>
             </div>
-
-            <Button variant="energy" size="lg">
-              En savoir plus sur notre histoire
-            </Button>
           </div>
 
           {/* Stats */}
