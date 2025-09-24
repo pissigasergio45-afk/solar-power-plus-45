@@ -56,13 +56,17 @@ const Hero = () => {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button variant="hero" size="lg" className="group">
-                Découvrir nos produits
-                <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-smooth" />
-              </Button>
-              <Button variant="outline" size="lg">
-                Devis personnalisé
-              </Button>
+              <a href="#produits">
+                <Button variant="hero" size="lg" className="group w-full sm:w-auto">
+                  Découvrir nos produits
+                  <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-smooth" />
+                </Button>
+              </a>
+              <a href="https://wa.me/22674842709?text=Bonjour, je souhaite obtenir un devis personnalisé pour une installation solaire." target="_blank" rel="noopener noreferrer">
+                <Button variant="outline" size="lg" className="w-full sm:w-auto">
+                  Devis personnalisé
+                </Button>
+              </a>
             </div>
 
             {/* Stats */}

@@ -11,7 +11,7 @@ const AboutSection = () => {
     },
     {
       icon: <Zap className="h-6 w-6" />,
-      number: "1MW",
+      number: "500kW",
       label: "Plus grande installation",
       gradient: "bg-gradient-tech"
     },
@@ -78,7 +78,7 @@ const AboutSection = () => {
                 </li>
                 <li className="flex items-center space-x-3">
                   <Users className="h-5 w-5 text-primary" />
-                  <span className="text-muted-foreground">20 clients satisfaits avec notre plus grande installation de 1MW</span>
+                  <span className="text-muted-foreground">20 clients satisfaits avec des installations performantes</span>
                 </li>
               </ul>
             </div>
