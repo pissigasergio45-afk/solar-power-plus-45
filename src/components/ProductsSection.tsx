@@ -1,12 +1,14 @@
 import ProductCard from "./ProductCard";
 import { Button } from "@/components/ui/button";
 import { Grid, Filter } from "lucide-react";
+import { useState } from "react";
 import solarPanel from "@/assets/solar-panel.jpg";
 import solarBattery from "@/assets/solar-battery.jpg";
 import solarInverter from "@/assets/solar-inverter.jpg";
 import solarCables from "@/assets/solar-cables.jpg";
 
 const ProductsSection = () => {
+  const [selectedCategory, setSelectedCategory] = useState("Tous");
   const products = [
     {
       id: 1,
@@ -70,6 +72,10 @@ const ProductsSection = () => {
   ];
 
   const categories = ["Tous", "Panneaux Solaires", "Batteries", "Onduleurs", "Câbles"];
+  
+  const filteredProducts = selectedCategory === "Tous" 
+    ? products 
+    : products.filter(product => product.category === selectedCategory);
 
   return (
     <section id="produits" className="py-20 bg-secondary/30">
@@ -93,8 +99,9 @@ const ProductsSection = () => {
             {categories.map((category) => (
               <Button
                 key={category}
-                variant={category === "Tous" ? "energy" : "outline"}
+                variant={category === selectedCategory ? "energy" : "outline"}
                 size="sm"
+                onClick={() => setSelectedCategory(category)}
               >
                 {category}
               </Button>
@@ -115,7 +122,7 @@ const ProductsSection = () => {
 
         {/* Products Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12">
-          {products.map((product) => (
+          {filteredProducts.map((product) => (
             <ProductCard key={product.id} {...product} />
           ))}
         </div>

@@ -5,12 +5,14 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import { useCart } from "@/contexts/CartContext";
 import { MessageSquare, Send, CheckCircle } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 const DevisPage = () => {
   const { toast } = useToast();
+  const { items, getTotalPrice } = useCart();
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -48,6 +50,13 @@ Informations du client:
 - Budget estimé: ${formData.budget}
 - Besoins en puissance: ${formData.powerNeeds}
 - Message: ${formData.message}
+
+${items.length > 0 ? `
+Produits sélectionnés dans le panier:
+${items.map(item => `- ${item.name} (Quantité: ${item.quantity}) - ${item.price}`).join('\n')}
+
+Total estimé: ${new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(getTotalPrice())}
+` : ''}
 
 Date de la demande: ${new Date().toLocaleDateString('fr-FR')}
     `;
@@ -99,6 +108,24 @@ Date de la demande: ${new Date().toLocaleDateString('fr-FR')}
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Obtenez votre devis personnalisé en quelques minutes. Nos experts vous répondront sous 24h avec une proposition adaptée à vos besoins.
             </p>
+            {items.length > 0 && (
+              <div className="bg-primary/10 rounded-lg p-4 mt-6 max-w-2xl mx-auto">
+                <p className="text-primary font-medium mb-2">
+                  🛒 {items.length} produit(s) sélectionné(s) dans votre panier
+                </p>
+                <div className="text-sm space-y-1">
+                  {items.map(item => (
+                    <div key={item.id} className="flex justify-between">
+                      <span>{item.name} (x{item.quantity})</span>
+                      <span className="font-medium">{item.price}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="text-primary font-bold mt-2 pt-2 border-t">
+                  Total: {new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(getTotalPrice())}
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="max-w-4xl mx-auto">

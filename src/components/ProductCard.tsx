@@ -4,8 +4,10 @@ import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ShoppingCart, Star, Info } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useCart } from "@/contexts/CartContext";
 
 interface ProductCardProps {
+  id: number;
   name: string;
   description: string;
   price: string;
@@ -18,6 +20,7 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ 
+  id,
   name, 
   description, 
   price, 
@@ -29,15 +32,20 @@ const ProductCard = ({
   isPopular 
 }: ProductCardProps) => {
   const { toast } = useToast();
+  const { addToCart } = useCart();
 
   const handleAddToCart = () => {
-    // Extraire le montant numérique du prix
-    const amount = price.replace(/[^\d]/g, '');
-    const ussdCode = `*144*2*1*52127476*${amount}#`;
+    addToCart({
+      id,
+      name,
+      price,
+      image,
+      category
+    });
     
     toast({
-      title: "Code d'achat généré",
-      description: `Composez: ${ussdCode} pour finaliser votre achat de ${name}`,
+      title: "Produit ajouté au panier",
+      description: `${name} a été ajouté à votre panier`,
     });
   };
 
