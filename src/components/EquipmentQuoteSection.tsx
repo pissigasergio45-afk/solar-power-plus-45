@@ -91,7 +91,7 @@ const EquipmentQuoteSection = () => {
 
                   {/* Action Button */}
                   <Button variant="energy" className="w-full" asChild>
-                    <a href="tel:+22674842709">
+                    <a href="/devis">
                       <Calculator className="h-4 w-4 mr-2" />
                       Demander un devis
                     </a>
@@ -131,7 +131,7 @@ const EquipmentQuoteSection = () => {
               Appelez le <span className="text-primary font-bold">+226 74 84 27 09</span> pour votre devis personnalisé
             </p>
             <Button variant="outline" size="lg" asChild>
-              <a href="tel:+22674842709">
+              <a href="/devis">
                 Obtenir mon devis maintenant
               </a>
             </Button>

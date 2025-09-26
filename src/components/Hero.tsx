@@ -62,7 +62,7 @@ const Hero = () => {
                   <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-smooth" />
                 </Button>
               </a>
-              <a href="https://wa.me/22674842709?text=Bonjour, je souhaite obtenir un devis personnalisé pour une installation solaire." target="_blank" rel="noopener noreferrer">
+              <a href="/devis">
                 <Button variant="outline" size="lg" className="w-full sm:w-auto">
                   Devis personnalisé
                 </Button>

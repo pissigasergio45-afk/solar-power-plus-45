@@ -71,7 +71,7 @@ const ContactSection = () => {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">
-                  NAGRIN, OUAGADOUGOU<br />
+                  OUAGADOUGOU<br />
                   Burkina Faso
                 </p>
                 <div className="mt-4 pt-4 border-t border-border">
@@ -148,10 +148,12 @@ const ContactSection = () => {
                 />
               </div>
 
-              <Button variant="energy" size="lg" className="w-full">
-                <MessageSquare className="h-5 w-5 mr-2" />
-                Envoyer ma demande
-              </Button>
+              <a href="/devis">
+                <Button variant="energy" size="lg" className="w-full">
+                  <MessageSquare className="h-5 w-5 mr-2" />
+                  Faire une demande de devis
+                </Button>
+              </a>
 
               <p className="text-xs text-muted-foreground text-center">
                 Nous vous répondrons sous 24h avec un devis personnalisé gratuit.

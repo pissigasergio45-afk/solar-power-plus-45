@@ -9,9 +9,11 @@ const Footer = () => {
           {/* Company Info */}
           <div className="space-y-6">
             <div className="flex items-center space-x-2">
-              <div className="w-10 h-10 bg-gradient-solar rounded-lg flex items-center justify-center">
-                <span className="text-accent-foreground font-bold text-xl">E</span>
-              </div>
+              <img 
+                src="/src/assets/zpenergy-logo.jpg" 
+                alt="ZPEnergy Logo" 
+                className="w-10 h-10 rounded-lg object-contain bg-white p-1"
+              />
             <div>
               <h3 className="text-2xl font-bold">ZPEnergy</h3>
               <p className="text-sm opacity-80">Solutions Solaires</p>
@@ -84,7 +86,7 @@ const Footer = () => {
               <div className="flex items-start space-x-3">
                 <MapPin className="h-5 w-5 opacity-80 mt-0.5" />
                 <span className="text-sm">
-                  NAGRIN, OUAGADOUGOU<br />
+                  OUAGADOUGOU<br />
                   Burkina Faso
                 </span>
               </div>
@@ -96,7 +98,7 @@ const Footer = () => {
                 • EZO-energy
               </div>
             </div>
-            <a href="https://wa.me/22674842709?text=Bonjour, je souhaite obtenir un devis gratuit pour une installation solaire." target="_blank" rel="noopener noreferrer">
+            <a href="/devis">
               <Button variant="solar" size="sm" className="w-full">
                 Devis gratuit
               </Button>

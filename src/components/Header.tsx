@@ -14,7 +14,7 @@ const Header = () => {
             <img 
               src="/src/assets/zpenergy-logo.jpg" 
               alt="ZPEnergy Logo" 
-              className="w-12 h-12 rounded-lg object-cover"
+              className="w-16 h-16 rounded-lg object-contain bg-white p-1"
             />
             <div>
               <h1 className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
@@ -45,7 +45,7 @@ const Header = () => {
             <Button variant="ghost" size="icon">
               <ShoppingCart className="h-5 w-5" />
             </Button>
-            <a href="https://wa.me/22674842709?text=Bonjour, je souhaite obtenir un devis gratuit pour une installation solaire." target="_blank" rel="noopener noreferrer">
+            <a href="/devis">
               <Button variant="energy" size="sm" className="hidden sm:flex">
                 <Phone className="h-4 w-4 mr-2" />
                 Devis Gratuit
@@ -80,7 +80,7 @@ const Header = () => {
               <a href="#contact" className="text-foreground hover:text-primary transition-smooth py-2">
                 Contact
               </a>
-              <a href="https://wa.me/22674842709?text=Bonjour, je souhaite obtenir un devis gratuit pour une installation solaire." target="_blank" rel="noopener noreferrer">
+              <a href="/devis">
                 <Button variant="energy" size="sm" className="mt-2 w-full">
                   <Phone className="h-4 w-4 mr-2" />
                   Devis Gratuit
