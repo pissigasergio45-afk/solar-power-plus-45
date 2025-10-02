@@ -148,12 +148,10 @@ const ContactSection = () => {
                 />
               </div>
 
-              <a href="/devis">
-                <Button variant="energy" size="lg" className="w-full">
-                  <MessageSquare className="h-5 w-5 mr-2" />
-                  Faire une demande de devis
-                </Button>
-              </a>
+              <Button variant="energy" size="lg" className="w-full">
+                <MessageSquare className="h-5 w-5 mr-2" />
+                Envoyer la demande
+              </Button>
 
               <p className="text-xs text-muted-foreground text-center">
                 Nous vous répondrons sous 24h avec un devis personnalisé gratuit.

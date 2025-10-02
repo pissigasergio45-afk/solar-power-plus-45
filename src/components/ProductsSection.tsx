@@ -1,6 +1,6 @@
 import ProductCard from "./ProductCard";
 import { Button } from "@/components/ui/button";
-import { Grid, Filter } from "lucide-react";
+
 import { useState } from "react";
 import solarPanel from "@/assets/solar-panel.jpg";
 import solarBattery from "@/assets/solar-battery.jpg";
@@ -14,8 +14,8 @@ const ProductsSection = () => {
       id: 1,
       name: "Panneau Solaire 400W",
       description: "Panneau photovoltaïque haute performance avec technologie monocristalline",
-      price: "299€",
-      originalPrice: "349€",
+      price: "$499 (299 500 FCFA)",
+      originalPrice: "$582 (349 200 FCFA)",
       image: solarPanel,
       category: "Panneaux Solaires",
       rating: 5,
@@ -30,8 +30,8 @@ const ProductsSection = () => {
       id: 2,
       name: "Batterie Lithium 10kWh",
       description: "Système de stockage d'énergie haute capacité pour autonomie maximale",
-      price: "4,999€",
-      originalPrice: "5,499€",
+      price: "$8,332 (4 999 200 FCFA)",
+      originalPrice: "$9,165 (5 499 000 FCFA)",
       image: solarBattery,
       category: "Batteries",
       rating: 5,
@@ -45,7 +45,7 @@ const ProductsSection = () => {
       id: 3,
       name: "Onduleur 5kW",
       description: "Onduleur string haute efficacité avec monitoring intégré",
-      price: "899€",
+      price: "$1,498 (899 000 FCFA)",
       image: solarInverter,
       category: "Onduleurs",
       rating: 4,
@@ -59,7 +59,7 @@ const ProductsSection = () => {
       id: 4,
       name: "Câbles DC/AC Kit",
       description: "Kit complet de câblage pour installation solaire professionnelle",
-      price: "199€",
+      price: "$332 (199 200 FCFA)",
       image: solarCables,
       category: "Câbles",
       rating: 4,
@@ -94,8 +94,8 @@ const ProductsSection = () => {
         </div>
 
         {/* Filters */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
-          <div className="flex flex-wrap gap-2">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
+          <div className="flex flex-wrap gap-2 justify-center">
             {categories.map((category) => (
               <Button
                 key={category}
@@ -106,17 +106,6 @@ const ProductsSection = () => {
                 {category}
               </Button>
             ))}
-          </div>
-          
-          <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm">
-              <Filter className="h-4 w-4 mr-2" />
-              Filtres
-            </Button>
-            <Button variant="outline" size="sm">
-              <Grid className="h-4 w-4 mr-2" />
-              Vue
-            </Button>
           </div>
         </div>
 
