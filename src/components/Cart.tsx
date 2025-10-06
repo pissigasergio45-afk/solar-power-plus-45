@@ -96,7 +96,7 @@ const Cart = () => {
                   <span>Total:</span>
                   <span className="text-primary">{formatPrice(getTotalPrice())}</span>
                 </div>
-                <a href="/devis">
+                <a href="#devis-gratuit">
                   <Button variant="energy" className="w-full">
                     Demander un devis
                   </Button>
