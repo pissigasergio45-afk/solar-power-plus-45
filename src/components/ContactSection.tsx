@@ -106,7 +106,7 @@ const ContactSection = () => {
           </div>
 
           {/* Contact Form */}
-          <Card className="border-0 bg-card/50 backdrop-blur-sm">
+          <Card id="devis-gratuit" className="border-0 bg-card/50 backdrop-blur-sm scroll-mt-20">
             <CardHeader>
               <CardTitle className="flex items-center space-x-3">
                 <MessageSquare className="h-6 w-6 text-primary" />

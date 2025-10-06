@@ -87,12 +87,6 @@ const ServicesSection = () => {
                     </li>
                   ))}
                 </ul>
-                
-                <a href="https://wa.me/22674842709?text=Bonjour, je souhaite en savoir plus sur vos services." target="_blank" rel="noopener noreferrer">
-                  <Button variant="outline" className="w-full mt-6 group-hover:border-primary transition-smooth">
-                    En savoir plus
-                  </Button>
-                </a>
               </CardContent>
             </Card>
           ))}
@@ -109,13 +103,13 @@ const ServicesSection = () => {
               Nos experts vous accompagnent de A à Z.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="#contact">
+              <a href="#devis-gratuit">
                 <Button variant="secondary" size="lg" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 w-full sm:w-auto">
                   <Phone className="h-5 w-5 mr-2" />
                   Devis gratuit
                 </Button>
               </a>
-              <a href="#contact">
+              <a href="#devis-gratuit">
                 <Button variant="outline" size="lg" className="border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10 w-full sm:w-auto">
                   Nous contacter
                 </Button>

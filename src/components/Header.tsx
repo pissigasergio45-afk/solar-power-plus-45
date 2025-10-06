@@ -44,7 +44,7 @@ const Header = () => {
           {/* Action Buttons */}
           <div className="flex items-center space-x-4">
             <Cart />
-            <a href="#contact">
+            <a href="#devis-gratuit">
               <Button variant="energy" size="sm" className="hidden sm:flex">
                 <Phone className="h-4 w-4 mr-2" />
                 Devis Gratuit
@@ -79,7 +79,7 @@ const Header = () => {
               <a href="#contact" className="text-foreground hover:text-primary transition-smooth py-2">
                 Contact
               </a>
-              <a href="#contact">
+              <a href="#devis-gratuit">
                 <Button variant="energy" size="sm" className="mt-2 w-full">
                   <Phone className="h-4 w-4 mr-2" />
                   Devis Gratuit
