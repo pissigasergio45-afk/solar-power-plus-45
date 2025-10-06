@@ -12,7 +12,7 @@ const Footer = () => {
               <img 
                 src="/src/assets/zpenergy-logo.jpg" 
                 alt="ZPEnergy Logo" 
-                className="w-10 h-10 rounded-lg object-contain bg-white p-1"
+                className="w-8 h-8 rounded-lg object-contain bg-white p-0.5"
               />
             <div>
               <h3 className="text-2xl font-bold">ZPEnergy</h3>
@@ -98,7 +98,7 @@ const Footer = () => {
                 • EZO-energy
               </div>
             </div>
-            <a href="/devis">
+            <a href="#contact">
               <Button variant="solar" size="sm" className="w-full">
                 Devis gratuit
               </Button>

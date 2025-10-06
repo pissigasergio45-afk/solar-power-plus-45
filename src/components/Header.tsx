@@ -15,7 +15,7 @@ const Header = () => {
             <img 
               src="/src/assets/zpenergy-logo.jpg" 
               alt="ZPEnergy Logo" 
-              className="w-16 h-16 rounded-lg object-contain bg-white p-1"
+              className="w-14 h-14 rounded-lg object-cover bg-white"
             />
             <div>
               <h1 className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">

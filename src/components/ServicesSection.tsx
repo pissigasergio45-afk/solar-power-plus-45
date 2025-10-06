@@ -109,7 +109,7 @@ const ServicesSection = () => {
               Nos experts vous accompagnent de A à Z.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="/devis">
+              <a href="#contact">
                 <Button variant="secondary" size="lg" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 w-full sm:w-auto">
                   <Phone className="h-5 w-5 mr-2" />
                   Devis gratuit

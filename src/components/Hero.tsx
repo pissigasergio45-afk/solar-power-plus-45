@@ -62,7 +62,7 @@ const Hero = () => {
                   <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-smooth" />
                 </Button>
               </a>
-              <a href="/devis">
+              <a href="#contact">
                 <Button variant="outline" size="lg" className="w-full sm:w-auto">
                   Devis personnalisé
                 </Button>
