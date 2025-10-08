@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Phone, Menu } from "lucide-react";
 import { useState } from "react";
 import Cart from "./Cart";
+import logo from "@/assets/zpenergy-logo-new.png";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -13,9 +14,9 @@ const Header = () => {
           {/* Logo */}
           <div className="flex items-center space-x-2">
             <img 
-              src="/src/assets/zpenergy-logo.jpg" 
-              alt="ZPEnergy Logo" 
-              className="w-14 h-14 rounded-lg object-cover bg-white"
+              src={logo} 
+              alt="ZPEnergy - Solutions Solaires Burkina Faso" 
+              className="w-14 h-14 object-contain"
             />
             <div>
               <h1 className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">

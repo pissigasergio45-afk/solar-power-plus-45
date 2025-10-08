@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Phone, Mail, MapPin, Facebook, Twitter, Linkedin, Instagram } from "lucide-react";
+import logo from "@/assets/zpenergy-logo-new.png";
 
 const Footer = () => {
   return (
@@ -10,9 +11,9 @@ const Footer = () => {
           <div className="space-y-6">
             <div className="flex items-center space-x-2">
               <img 
-                src="/src/assets/zpenergy-logo.jpg" 
-                alt="ZPEnergy Logo" 
-                className="w-8 h-8 rounded-lg object-contain bg-white p-0.5"
+                src={logo} 
+                alt="ZPEnergy - Solutions Solaires Burkina Faso" 
+                className="w-8 h-8 object-contain"
               />
             <div>
               <h3 className="text-2xl font-bold">ZPEnergy</h3>
