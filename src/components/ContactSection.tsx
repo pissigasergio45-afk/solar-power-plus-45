@@ -3,8 +3,65 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Phone, Mail, MapPin, Clock, MessageSquare } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { useToast } from "@/hooks/use-toast";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
+const formSchema = z.object({
+  name: z.string().min(2, { message: "Le nom doit contenir au moins 2 caractères" }).max(100),
+  phone: z.string().min(8, { message: "Numéro de téléphone invalide" }).max(20),
+  email: z.string().email({ message: "Email invalide" }).max(255),
+  projectType: z.string().min(1, { message: "Veuillez sélectionner un type de projet" }),
+  message: z.string().min(10, { message: "Le message doit contenir au moins 10 caractères" }).max(1000),
+});
+
+type FormData = z.infer<typeof formSchema>;
 
 const ContactSection = () => {
+  const { toast } = useToast();
+  
+  const form = useForm<FormData>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      phone: "",
+      email: "",
+      projectType: "",
+      message: "",
+    },
+  });
+
+  const onSubmit = (data: FormData) => {
+    const emailSubject = encodeURIComponent(`Demande de Devis - ${data.projectType}`);
+    const emailBody = encodeURIComponent(`
+Nouvelle Demande de Devis ZPEnergy
+
+Nom: ${data.name}
+Téléphone: ${data.phone}
+Email: ${data.email}
+Type de projet: ${data.projectType}
+
+Message:
+${data.message}
+
+---
+Envoyé depuis le site web ZPEnergy
+    `);
+
+    // Ouvrir le client email avec les informations pré-remplies
+    window.location.href = `mailto:pissigasergio45@gmail.com?subject=${emailSubject}&body=${emailBody}`;
+    
+    toast({
+      title: "Demande envoyée !",
+      description: "Votre client email va s'ouvrir. Envoyez l'email pour finaliser votre demande.",
+    });
+    
+    form.reset();
+  };
+
   return (
     <section id="contact" className="py-20 bg-secondary/30">
       <div className="container mx-auto px-4">
@@ -113,49 +170,104 @@ const ContactSection = () => {
                 <span>Demande de Devis Gratuit</span>
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Nom complet</label>
-                  <Input placeholder="Votre nom" />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Téléphone</label>
-                  <Input placeholder="+226 XX XX XX XX" />
-                </div>
-              </div>
-              
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Email</label>
-                <Input type="email" placeholder="votre@email.com" />
-              </div>
+            <CardContent>
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <FormField
+                      control={form.control}
+                      name="name"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Nom complet</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Votre nom" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="phone"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Téléphone</FormLabel>
+                          <FormControl>
+                            <Input placeholder="+226 XX XX XX XX" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Email</FormLabel>
+                        <FormControl>
+                          <Input type="email" placeholder="votre@email.com" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Type de projet</label>
-                <select className="w-full px-3 py-2 border border-border rounded-md bg-background">
-                  <option>Installation résidentielle</option>
-                  <option>Installation commerciale</option>
-                  <option>Installation industrielle</option>
-                  <option>Maintenance et réparation</option>
-                </select>
-              </div>
+                  <FormField
+                    control={form.control}
+                    name="projectType"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Type de projet</FormLabel>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Sélectionnez un type de projet" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="Installation résidentielle">Installation résidentielle</SelectItem>
+                            <SelectItem value="Installation commerciale">Installation commerciale</SelectItem>
+                            <SelectItem value="Installation industrielle">Installation industrielle</SelectItem>
+                            <SelectItem value="Maintenance et réparation">Maintenance et réparation</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Message</label>
-                <Textarea 
-                  placeholder="Décrivez votre projet ou vos besoins en énergie solaire..."
-                  rows={4}
-                />
-              </div>
+                  <FormField
+                    control={form.control}
+                    name="message"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Message</FormLabel>
+                        <FormControl>
+                          <Textarea 
+                            placeholder="Décrivez votre projet ou vos besoins en énergie solaire..."
+                            rows={4}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-              <Button variant="energy" size="lg" className="w-full">
-                <MessageSquare className="h-5 w-5 mr-2" />
-                Envoyer la demande
-              </Button>
+                  <Button type="submit" variant="energy" size="lg" className="w-full">
+                    <MessageSquare className="h-5 w-5 mr-2" />
+                    Envoyer la demande
+                  </Button>
 
-              <p className="text-xs text-muted-foreground text-center">
-                Nous vous répondrons sous 24h avec un devis personnalisé gratuit.
-              </p>
+                  <p className="text-xs text-muted-foreground text-center">
+                    Nous vous répondrons sous 24h avec un devis personnalisé gratuit.
+                  </p>
+                </form>
+              </Form>
             </CardContent>
           </Card>
         </div>
