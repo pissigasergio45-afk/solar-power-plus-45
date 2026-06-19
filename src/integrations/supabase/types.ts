@@ -10,237 +10,211 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "13.0.4"
+    PostgrestVersion: "14.5"
   }
   public: {
     Tables: {
-      categories: {
+      alerts: {
         Row: {
-          created_at: string
-          description: string | null
-          id: string
-          name: string
-          slug: string
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          description?: string | null
-          id?: string
-          name: string
-          slug: string
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          description?: string | null
-          id?: string
-          name?: string
-          slug?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
-      nom: {
-        Row: {
-          created_at: string
-          id: number
-        }
-        Insert: {
-          created_at?: string
-          id?: number
-        }
-        Update: {
-          created_at?: string
-          id?: number
-        }
-        Relationships: []
-      }
-      order_items: {
-        Row: {
+          acknowledged: boolean
           created_at: string
           id: string
-          order_id: string | null
-          product_id: string | null
-          quantity: number
-          total_price: number
-          unit_price: number
+          message: string
+          meter_id: string
+          severity: Database["public"]["Enums"]["alert_severity"]
+          type: Database["public"]["Enums"]["alert_type"]
         }
         Insert: {
+          acknowledged?: boolean
           created_at?: string
           id?: string
-          order_id?: string | null
-          product_id?: string | null
-          quantity: number
-          total_price: number
-          unit_price: number
+          message: string
+          meter_id: string
+          severity?: Database["public"]["Enums"]["alert_severity"]
+          type: Database["public"]["Enums"]["alert_type"]
         }
         Update: {
+          acknowledged?: boolean
           created_at?: string
           id?: string
-          order_id?: string | null
-          product_id?: string | null
-          quantity?: number
-          total_price?: number
-          unit_price?: number
+          message?: string
+          meter_id?: string
+          severity?: Database["public"]["Enums"]["alert_severity"]
+          type?: Database["public"]["Enums"]["alert_type"]
         }
         Relationships: [
           {
-            foreignKeyName: "order_items_order_id_fkey"
-            columns: ["order_id"]
+            foreignKeyName: "alerts_meter_id_fkey"
+            columns: ["meter_id"]
             isOneToOne: false
-            referencedRelation: "orders"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "order_items_product_id_fkey"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "products"
+            referencedRelation: "water_meters"
             referencedColumns: ["id"]
           },
         ]
       }
-      orders: {
+      notifications: {
         Row: {
+          alert_id: string | null
+          body: string | null
           created_at: string
-          delivery_address: string | null
-          delivery_city: string | null
-          delivery_postal_code: string | null
           id: string
-          installation_date: string | null
-          installation_requested: boolean | null
-          notes: string | null
-          status: string
-          total_amount: number
-          updated_at: string
-          user_id: string | null
+          read: boolean
+          title: string
+          user_id: string
         }
         Insert: {
+          alert_id?: string | null
+          body?: string | null
           created_at?: string
-          delivery_address?: string | null
-          delivery_city?: string | null
-          delivery_postal_code?: string | null
           id?: string
-          installation_date?: string | null
-          installation_requested?: boolean | null
-          notes?: string | null
-          status?: string
-          total_amount: number
-          updated_at?: string
-          user_id?: string | null
+          read?: boolean
+          title: string
+          user_id: string
         }
         Update: {
+          alert_id?: string | null
+          body?: string | null
           created_at?: string
-          delivery_address?: string | null
-          delivery_city?: string | null
-          delivery_postal_code?: string | null
           id?: string
-          installation_date?: string | null
-          installation_requested?: boolean | null
-          notes?: string | null
-          status?: string
-          total_amount?: number
-          updated_at?: string
-          user_id?: string | null
-        }
-        Relationships: []
-      }
-      products: {
-        Row: {
-          category_id: string | null
-          created_at: string
-          description: string | null
-          features: string[] | null
-          id: string
-          image_url: string | null
-          is_popular: boolean | null
-          name: string
-          original_price: number | null
-          price: number
-          rating: number | null
-          stock_quantity: number
-          updated_at: string
-        }
-        Insert: {
-          category_id?: string | null
-          created_at?: string
-          description?: string | null
-          features?: string[] | null
-          id?: string
-          image_url?: string | null
-          is_popular?: boolean | null
-          name: string
-          original_price?: number | null
-          price: number
-          rating?: number | null
-          stock_quantity?: number
-          updated_at?: string
-        }
-        Update: {
-          category_id?: string | null
-          created_at?: string
-          description?: string | null
-          features?: string[] | null
-          id?: string
-          image_url?: string | null
-          is_popular?: boolean | null
-          name?: string
-          original_price?: number | null
-          price?: number
-          rating?: number | null
-          stock_quantity?: number
-          updated_at?: string
+          read?: boolean
+          title?: string
+          user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "products_category_id_fkey"
-            columns: ["category_id"]
+            foreignKeyName: "notifications_alert_id_fkey"
+            columns: ["alert_id"]
             isOneToOne: false
-            referencedRelation: "categories"
+            referencedRelation: "alerts"
             referencedColumns: ["id"]
           },
         ]
       }
       profiles: {
         Row: {
-          address: string | null
-          city: string | null
           created_at: string
           email: string | null
-          first_name: string | null
+          full_name: string | null
           id: string
-          last_name: string | null
-          phone: string | null
-          postal_code: string | null
           updated_at: string
-          user_id: string | null
         }
         Insert: {
-          address?: string | null
-          city?: string | null
           created_at?: string
           email?: string | null
-          first_name?: string | null
-          id?: string
-          last_name?: string | null
-          phone?: string | null
-          postal_code?: string | null
+          full_name?: string | null
+          id: string
           updated_at?: string
-          user_id?: string | null
         }
         Update: {
-          address?: string | null
-          city?: string | null
           created_at?: string
           email?: string | null
-          first_name?: string | null
+          full_name?: string | null
           id?: string
-          last_name?: string | null
-          phone?: string | null
-          postal_code?: string | null
           updated_at?: string
-          user_id?: string | null
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      water_consumption: {
+        Row: {
+          battery: number | null
+          created_at: string
+          flow_rate: number
+          id: string
+          meter_id: string
+          recorded_at: string
+          volume: number
+        }
+        Insert: {
+          battery?: number | null
+          created_at?: string
+          flow_rate?: number
+          id?: string
+          meter_id: string
+          recorded_at?: string
+          volume?: number
+        }
+        Update: {
+          battery?: number | null
+          created_at?: string
+          flow_rate?: number
+          id?: string
+          meter_id?: string
+          recorded_at?: string
+          volume?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "water_consumption_meter_id_fkey"
+            columns: ["meter_id"]
+            isOneToOne: false
+            referencedRelation: "water_meters"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      water_meters: {
+        Row: {
+          api_key: string
+          battery_level: number | null
+          created_at: string
+          id: string
+          last_seen_at: string | null
+          location: string | null
+          meter_id: string
+          name: string
+          owner_id: string | null
+          status: string
+          total_volume: number
+          updated_at: string
+        }
+        Insert: {
+          api_key?: string
+          battery_level?: number | null
+          created_at?: string
+          id?: string
+          last_seen_at?: string | null
+          location?: string | null
+          meter_id: string
+          name?: string
+          owner_id?: string | null
+          status?: string
+          total_volume?: number
+          updated_at?: string
+        }
+        Update: {
+          api_key?: string
+          battery_level?: number | null
+          created_at?: string
+          id?: string
+          last_seen_at?: string | null
+          location?: string | null
+          meter_id?: string
+          name?: string
+          owner_id?: string | null
+          status?: string
+          total_volume?: number
+          updated_at?: string
         }
         Relationships: []
       }
@@ -249,10 +223,23 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      alert_severity: "info" | "warning" | "critical"
+      alert_type:
+        | "leak"
+        | "high_consumption"
+        | "low_battery"
+        | "offline"
+        | "no_transmission"
+      app_role: "admin" | "client"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -379,6 +366,16 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      alert_severity: ["info", "warning", "critical"],
+      alert_type: [
+        "leak",
+        "high_consumption",
+        "low_battery",
+        "offline",
+        "no_transmission",
+      ],
+      app_role: ["admin", "client"],
+    },
   },
 } as const
