@@ -69,9 +69,25 @@ export default function Dashboard() {
   const dailyVolume = readings.filter((r) => new Date(r.recorded_at) >= today).reduce((s, r, i, arr) => i === 0 ? 0 : s + Math.max(0, r.volume - arr[i - 1].volume), 0);
 
   const monthStart = new Date(); monthStart.setDate(1); monthStart.setHours(0, 0, 0, 0);
-  const monthlyVolume = readings.filter((r) => new Date(r.recorded_at) >= monthStart).reduce((s, r, i, arr) => i === 0 ? 0 : s + Math.max(0, r.volume - arr[i - 1].volume), 0);
+  const prevMonthStart = new Date(monthStart); prevMonthStart.setMonth(prevMonthStart.getMonth() - 1);
+  const sumBetween = (from: Date, to: Date) => {
+    const arr = readings.filter((r) => { const t = new Date(r.recorded_at); return t >= from && t < to; });
+    return arr.reduce((s, r, i) => i === 0 ? 0 : s + Math.max(0, r.volume - arr[i - 1].volume), 0);
+  };
+  const monthlyVolume = sumBetween(monthStart, new Date());
+  const prevMonthlyVolume = sumBetween(prevMonthStart, monthStart);
+  const savedVolume = Math.max(0, prevMonthlyVolume - monthlyVolume);
+  const savingsPct = prevMonthlyVolume > 0 ? ((prevMonthlyVolume - monthlyVolume) / prevMonthlyVolume) * 100 : 0;
+  // 1 m³ ≈ 4 € (tarif moyen estimatif) — ajustez selon votre tarif local
+  const PRICE_PER_M3 = 4;
+  const savedMoney = savedVolume * PRICE_PER_M3;
+  const monthlyCost = monthlyVolume * PRICE_PER_M3;
 
   const isOnline = selected?.status === "active" && selected?.last_seen_at && (Date.now() - new Date(selected.last_seen_at).getTime() < 10 * 60 * 1000);
+
+  // Leak detection (alerts of type 'leak')
+  const leakAlerts = alerts.filter((a) => a.type === "leak");
+  const activeLeaks = leakAlerts.filter((a) => !a.acknowledged);
 
   // Chart data
   const hourly = aggregate(readings, "hour", 24);
