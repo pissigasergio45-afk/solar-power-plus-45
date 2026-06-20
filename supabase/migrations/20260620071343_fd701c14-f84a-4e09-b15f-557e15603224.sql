@@ -1,0 +1,1 @@
+REVOKE EXECUTE ON FUNCTION public.process_water_reading() FROM PUBLIC, anon, authenticated;

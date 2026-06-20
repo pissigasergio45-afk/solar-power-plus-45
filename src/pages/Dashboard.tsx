@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Gauge, Droplets, Battery, Wifi, WifiOff, Bell, Download, AlertTriangle, Clock } from "lucide-react";
+import { Gauge, Droplets, Battery, Wifi, WifiOff, Bell, Download, AlertTriangle, Clock, TrendingDown, TrendingUp, Leaf, ShieldAlert, CheckCircle2 } from "lucide-react";
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 import { format, subDays, startOfDay } from "date-fns";
 import { fr } from "date-fns/locale";
@@ -69,9 +69,25 @@ export default function Dashboard() {
   const dailyVolume = readings.filter((r) => new Date(r.recorded_at) >= today).reduce((s, r, i, arr) => i === 0 ? 0 : s + Math.max(0, r.volume - arr[i - 1].volume), 0);
 
   const monthStart = new Date(); monthStart.setDate(1); monthStart.setHours(0, 0, 0, 0);
-  const monthlyVolume = readings.filter((r) => new Date(r.recorded_at) >= monthStart).reduce((s, r, i, arr) => i === 0 ? 0 : s + Math.max(0, r.volume - arr[i - 1].volume), 0);
+  const prevMonthStart = new Date(monthStart); prevMonthStart.setMonth(prevMonthStart.getMonth() - 1);
+  const sumBetween = (from: Date, to: Date) => {
+    const arr = readings.filter((r) => { const t = new Date(r.recorded_at); return t >= from && t < to; });
+    return arr.reduce((s, r, i) => i === 0 ? 0 : s + Math.max(0, r.volume - arr[i - 1].volume), 0);
+  };
+  const monthlyVolume = sumBetween(monthStart, new Date());
+  const prevMonthlyVolume = sumBetween(prevMonthStart, monthStart);
+  const savedVolume = Math.max(0, prevMonthlyVolume - monthlyVolume);
+  const savingsPct = prevMonthlyVolume > 0 ? ((prevMonthlyVolume - monthlyVolume) / prevMonthlyVolume) * 100 : 0;
+  // 1 m³ ≈ 4 € (tarif moyen estimatif) — ajustez selon votre tarif local
+  const PRICE_PER_M3 = 4;
+  const savedMoney = savedVolume * PRICE_PER_M3;
+  const monthlyCost = monthlyVolume * PRICE_PER_M3;
 
   const isOnline = selected?.status === "active" && selected?.last_seen_at && (Date.now() - new Date(selected.last_seen_at).getTime() < 10 * 60 * 1000);
+
+  // Leak detection (alerts of type 'leak')
+  const leakAlerts = alerts.filter((a) => a.type === "leak");
+  const activeLeaks = leakAlerts.filter((a) => !a.acknowledged);
 
   // Chart data
   const hourly = aggregate(readings, "hour", 24);
@@ -178,6 +194,90 @@ export default function Dashboard() {
             <TabsContent value="week"><Chart data={weekly} type="bar" /></TabsContent>
             <TabsContent value="month"><Chart data={monthly} type="bar" /></TabsContent>
           </Tabs>
+        </Card>
+
+        {/* Leak detection */}
+        <Card className="p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold flex items-center gap-2">
+              <ShieldAlert className="h-5 w-5 text-destructive" />
+              Détection de fuites
+            </h2>
+            <Badge variant={activeLeaks.length ? "destructive" : "outline"} className={!activeLeaks.length ? "border-success text-success" : ""}>
+              {activeLeaks.length ? `${activeLeaks.length} fuite${activeLeaks.length > 1 ? "s" : ""} active${activeLeaks.length > 1 ? "s" : ""}` : "Aucune fuite"}
+            </Badge>
+          </div>
+          {activeLeaks.length === 0 ? (
+            <div className="flex items-center gap-3 p-4 rounded-lg bg-success/5 border border-success/30">
+              <CheckCircle2 className="h-8 w-8 text-success shrink-0" />
+              <div>
+                <p className="font-medium">Aucune fuite détectée</p>
+                <p className="text-sm text-muted-foreground">Le système analyse votre débit en continu. Une fuite est signalée si un débit faible (0.1 – 1 L/min) persiste anormalement.</p>
+              </div>
+            </div>
+          ) : (
+            <div className="space-y-2">
+              {activeLeaks.slice(0, 5).map((a) => (
+                <div key={a.id} className="flex items-start gap-3 p-3 rounded-lg bg-destructive/5 border border-destructive/30">
+                  <AlertTriangle className="h-5 w-5 text-destructive shrink-0 mt-0.5" />
+                  <div className="flex-1">
+                    <p className="text-sm font-medium">{a.message}</p>
+                    <p className="text-xs text-muted-foreground">Détectée le {format(new Date(a.created_at), "dd MMM yyyy · HH:mm", { locale: fr })}</p>
+                  </div>
+                  <Button size="sm" variant="outline" onClick={async () => {
+                    await supabase.from("alerts").update({ acknowledged: true }).eq("id", a.id);
+                    setAlerts((prev) => prev.map((x) => x.id === a.id ? { ...x, acknowledged: true } : x));
+                  }}>Résolu</Button>
+                </div>
+              ))}
+            </div>
+          )}
+          <div className="grid grid-cols-3 gap-3 mt-4 pt-4 border-t">
+            <div className="text-center">
+              <p className="text-2xl font-bold">{leakAlerts.length}</p>
+              <p className="text-xs text-muted-foreground">Total détecté</p>
+            </div>
+            <div className="text-center">
+              <p className="text-2xl font-bold text-success">{leakAlerts.filter((a) => a.acknowledged).length}</p>
+              <p className="text-xs text-muted-foreground">Résolues</p>
+            </div>
+            <div className="text-center">
+              <p className="text-2xl font-bold text-destructive">{activeLeaks.length}</p>
+              <p className="text-xs text-muted-foreground">En cours</p>
+            </div>
+          </div>
+        </Card>
+
+        {/* Water savings */}
+        <Card className="p-6 bg-gradient-card">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold flex items-center gap-2">
+              <Leaf className="h-5 w-5 text-success" />
+              Économies d'eau
+            </h2>
+            <Badge variant="outline" className={savingsPct >= 0 ? "border-success text-success" : "border-destructive text-destructive"}>
+              {savingsPct >= 0 ? <TrendingDown className="h-3 w-3 mr-1" /> : <TrendingUp className="h-3 w-3 mr-1" />}
+              {savingsPct >= 0 ? "-" : "+"}{Math.abs(savingsPct).toFixed(1)}% vs mois précédent
+            </Badge>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="p-4 rounded-lg bg-background/60 border">
+              <p className="text-xs text-muted-foreground mb-1">Consommation ce mois</p>
+              <p className="text-2xl font-bold">{monthlyVolume.toFixed(2)} <span className="text-sm font-normal text-muted-foreground">m³</span></p>
+              <p className="text-xs text-muted-foreground mt-1">≈ {monthlyCost.toFixed(2)} € estimés</p>
+            </div>
+            <div className="p-4 rounded-lg bg-background/60 border">
+              <p className="text-xs text-muted-foreground mb-1">Mois précédent</p>
+              <p className="text-2xl font-bold">{prevMonthlyVolume.toFixed(2)} <span className="text-sm font-normal text-muted-foreground">m³</span></p>
+              <p className="text-xs text-muted-foreground mt-1">Référence de comparaison</p>
+            </div>
+            <div className={`p-4 rounded-lg border ${savedVolume > 0 ? "bg-success/10 border-success/40" : "bg-muted/30"}`}>
+              <p className="text-xs text-muted-foreground mb-1">Eau économisée</p>
+              <p className={`text-2xl font-bold ${savedVolume > 0 ? "text-success" : ""}`}>{savedVolume.toFixed(2)} <span className="text-sm font-normal text-muted-foreground">m³</span></p>
+              <p className={`text-xs mt-1 ${savedVolume > 0 ? "text-success" : "text-muted-foreground"}`}>≈ {savedMoney.toFixed(2)} € économisés</p>
+            </div>
+          </div>
+          <p className="text-xs text-muted-foreground mt-3">💡 Tarif estimatif : {PRICE_PER_M3} € / m³. Vos économies sont calculées en comparant votre consommation actuelle au mois précédent.</p>
         </Card>
 
         {/* Alerts */}
