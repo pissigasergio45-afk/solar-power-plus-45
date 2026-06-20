@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Gauge, Droplets, Battery, Wifi, WifiOff, Bell, Download, AlertTriangle, Clock } from "lucide-react";
+import { Gauge, Droplets, Battery, Wifi, WifiOff, Bell, Download, AlertTriangle, Clock, TrendingDown, TrendingUp, Leaf, ShieldAlert, CheckCircle2 } from "lucide-react";
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 import { format, subDays, startOfDay } from "date-fns";
 import { fr } from "date-fns/locale";
