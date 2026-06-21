@@ -198,6 +198,91 @@ export default function Dashboard() {
           </Card>
         )}
 
+        {/* MQTT temps réel (HiveMQ) */}
+        <Card className="p-6 bg-gradient-card">
+          <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+            <h2 className="text-lg font-semibold flex items-center gap-2">
+              <Radio className="h-5 w-5 text-primary" />
+              Flux MQTT en direct
+              <span className="text-xs font-normal text-muted-foreground">broker.hivemq.com</span>
+            </h2>
+            <Badge
+              variant={mqttStatus === "connected" ? "default" : "secondary"}
+              className={
+                mqttStatus === "connected"
+                  ? "bg-success text-success-foreground"
+                  : mqttStatus === "error"
+                  ? "bg-destructive text-destructive-foreground"
+                  : ""
+              }
+            >
+              {mqttStatus === "connected" ? <Wifi className="h-3 w-3 mr-1" /> : <WifiOff className="h-3 w-3 mr-1" />}
+              MQTT {mqttStatus === "connected" ? "connecté" : mqttStatus === "connecting" ? "connexion…" : mqttStatus === "error" ? "erreur" : "déconnecté"}
+            </Badge>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="p-4 rounded-lg bg-background/60 border">
+              <p className="text-xs text-muted-foreground flex items-center gap-1"><Gauge className="h-3 w-3" /> Débit instantané</p>
+              <p className="text-2xl font-bold mt-1">{mqtt.debit.toFixed(2)} <span className="text-sm font-normal text-muted-foreground">L/min</span></p>
+            </div>
+            <div className="p-4 rounded-lg bg-background/60 border">
+              <p className="text-xs text-muted-foreground flex items-center gap-1"><Droplets className="h-3 w-3" /> Volume cumulé</p>
+              <p className="text-2xl font-bold mt-1">{mqtt.volume.toFixed(2)} <span className="text-sm font-normal text-muted-foreground">L</span></p>
+            </div>
+            <div className="p-4 rounded-lg bg-background/60 border">
+              <p className="text-xs text-muted-foreground flex items-center gap-1"><Coins className="h-3 w-3" /> Solde crédit</p>
+              <p className="text-2xl font-bold mt-1">{mqtt.credit.toFixed(0)} <span className="text-sm font-normal text-muted-foreground">FCFA</span></p>
+            </div>
+            <div className={`p-4 rounded-lg border ${mqtt.alarme ? "bg-destructive/10 border-destructive/40" : "bg-background/60"}`}>
+              <p className="text-xs text-muted-foreground flex items-center gap-1"><AlertTriangle className="h-3 w-3" /> Dernière alarme</p>
+              <p className={`text-sm font-semibold mt-1 line-clamp-2 ${mqtt.alarme ? "text-destructive" : "text-muted-foreground"}`}>
+                {mqtt.alarme ?? "Aucune"}
+              </p>
+            </div>
+          </div>
+          <p className="text-xs text-muted-foreground mt-3">
+            Topics abonnés : <code>compteur/eau/data</code>, <code>compteur/eau/credit</code>, <code>compteur/eau/alarme</code>
+            {mqtt.lastUpdate && <> · Dernier message : {format(mqtt.lastUpdate, "HH:mm:ss")}</>}
+          </p>
+        </Card>
+
+        {/* Historique MQTT (Supabase Realtime) */}
+        <Card className="p-6">
+          <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+            <Clock className="h-5 w-5 text-primary" />
+            Historique des messages MQTT
+            <Badge variant="outline" className="ml-auto">{mqttHistory.length}</Badge>
+          </h2>
+          {mqttHistory.length === 0 ? (
+            <p className="text-center text-muted-foreground py-8">En attente de messages MQTT…</p>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="text-xs text-muted-foreground border-b">
+                  <tr>
+                    <th className="text-left py-2 px-2">Horodatage</th>
+                    <th className="text-right py-2 px-2">Débit (L/min)</th>
+                    <th className="text-right py-2 px-2">Volume (L)</th>
+                    <th className="text-right py-2 px-2">Crédit (FCFA)</th>
+                    <th className="text-left py-2 px-2">Alarme</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {mqttHistory.slice(0, 20).map((r) => (
+                    <tr key={r.id} className="border-b last:border-0 hover:bg-muted/30">
+                      <td className="py-2 px-2 whitespace-nowrap">{format(new Date(r.timestamp), "dd/MM HH:mm:ss")}</td>
+                      <td className="py-2 px-2 text-right">{Number(r.debit ?? 0).toFixed(2)}</td>
+                      <td className="py-2 px-2 text-right">{Number(r.volume ?? 0).toFixed(2)}</td>
+                      <td className="py-2 px-2 text-right">{Number(r.credit ?? 0).toFixed(0)}</td>
+                      <td className="py-2 px-2 text-destructive">{r.alarme ?? "—"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </Card>
+
         {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <StatCard icon={Gauge} label="Débit instantané" value={flowRate.toFixed(1)} unit="L/min" accent="primary" />
