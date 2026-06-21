@@ -218,6 +218,50 @@ export type Database = {
         }
         Relationships: []
       }
+      water_readings: {
+        Row: {
+          alarme: string | null
+          created_at: string
+          credit: number | null
+          debit: number | null
+          id: string
+          meter_id: string | null
+          timestamp: string
+          user_id: string | null
+          volume: number | null
+        }
+        Insert: {
+          alarme?: string | null
+          created_at?: string
+          credit?: number | null
+          debit?: number | null
+          id?: string
+          meter_id?: string | null
+          timestamp?: string
+          user_id?: string | null
+          volume?: number | null
+        }
+        Update: {
+          alarme?: string | null
+          created_at?: string
+          credit?: number | null
+          debit?: number | null
+          id?: string
+          meter_id?: string | null
+          timestamp?: string
+          user_id?: string | null
+          volume?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "water_readings_meter_id_fkey"
+            columns: ["meter_id"]
+            isOneToOne: false
+            referencedRelation: "water_meters"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
