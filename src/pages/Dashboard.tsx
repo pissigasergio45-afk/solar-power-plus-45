@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Gauge, Droplets, Battery, Wifi, WifiOff, Bell, Download, AlertTriangle, Clock, TrendingDown, TrendingUp, Leaf, ShieldAlert, CheckCircle2 } from "lucide-react";
+import { Gauge, Droplets, Battery, Wifi, WifiOff, Bell, Download, AlertTriangle, Clock, TrendingDown, TrendingUp, Leaf, ShieldAlert, CheckCircle2, Radio, Coins } from "lucide-react";
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 import { format, subDays, startOfDay } from "date-fns";
 import { fr } from "date-fns/locale";
@@ -12,7 +12,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { Navbar } from "@/components/Navbar";
 import { StatCard } from "@/components/StatCard";
+import { useMQTT } from "@/hooks/useMQTT";
 import { toast } from "sonner";
+
+type WaterReading = { id: string; debit: number | null; volume: number | null; credit: number | null; alarme: string | null; timestamp: string };
 
 type Meter = { id: string; meter_id: string; name: string; location: string | null; status: string; battery_level: number | null; last_seen_at: string | null; total_volume: number; api_key: string };
 type Reading = { id: string; flow_rate: number; volume: number; battery: number | null; recorded_at: string };
@@ -24,7 +27,15 @@ export default function Dashboard() {
   const [selectedId, setSelectedId] = useState<string>("");
   const [readings, setReadings] = useState<Reading[]>([]);
   const [alerts, setAlerts] = useState<Alert[]>([]);
+  const [mqttHistory, setMqttHistory] = useState<WaterReading[]>([]);
   const selected = meters.find((m) => m.id === selectedId);
+
+  // MQTT temps réel (HiveMQ via WebSocket)
+  const { status: mqttStatus, data: mqtt } = useMQTT({
+    userId: user?.id ?? null,
+    meterId: selectedId || null,
+    persist: true,
+  });
 
   // Load meters
   useEffect(() => {
@@ -59,6 +70,28 @@ export default function Dashboard() {
       .subscribe();
     return () => { supabase.removeChannel(channel); };
   }, [selectedId]);
+
+  // Historique MQTT (water_readings) + realtime
+  useEffect(() => {
+    if (!user) return;
+    supabase
+      .from("water_readings")
+      .select("*")
+      .eq("user_id", user.id)
+      .order("timestamp", { ascending: false })
+      .limit(50)
+      .then(({ data }) => setMqttHistory((data ?? []) as WaterReading[]));
+
+    const ch = supabase
+      .channel(`water_readings-${user.id}`)
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "water_readings", filter: `user_id=eq.${user.id}` },
+        (p) => setMqttHistory((prev) => [p.new as WaterReading, ...prev].slice(0, 50))
+      )
+      .subscribe();
+    return () => { supabase.removeChannel(ch); };
+  }, [user]);
 
   // Aggregations
   const latest = readings[readings.length - 1];
